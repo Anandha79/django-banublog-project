@@ -1,0 +1,29 @@
+{% extends 'blogproject1/base.html' %}
+
+{%block title_block%}
+Bhanu Prakash'S Blog Home Page
+{%endblock%}
+{% block content_block %}
+<h1>Bhanu Prakash'S Blog </h1>
+{% if tag %}
+<h2>Post tagged with {{tag.name}} </h2>
+{% endif %}
+{% for post in post_list %}
+
+<a href="{{post.get_absolute_url}}"><h2>{{post.title}}</h2></a>
+<p id='date'>Published on {{post.published}} by {{post.author|title}}</p>
+<p>Tags:
+  {% for tag in post.tags.all %}
+
+    <a href="{% url 'post_list_by_tag_name' tag.slug %}" class='btn btn-success'>{{tag.name}}</a>
+
+
+  <!--{% if not forloop.last%},{%endif%}-->
+  {% endfor %}</p>
+{{post.body|truncatewords:50|linebreaks}}
+
+
+{% endfor %}
+{% include 'blogproject1/pagination.html' with page=post_list %}
+
+{% endblock %}
